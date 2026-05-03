@@ -94,7 +94,7 @@ namespace CyberDefense.Entities
                 int collaborators = Mathf.Max(1, Simulation.CountRepairDronesNear(repairTarget.Position2D, 2f));
                 repairTarget.Repair(Time.deltaTime * 8f * collaborators);
                 PulseRepairVisual(collaborators);
-                ShowInteractionBeam(repairTarget, new Color(0.42f, 0.96f, 1f, 0.95f));
+                ShowInteractionBeam(repairTarget, new Color(0.1f, 1f, 0.38f, 0.95f), 0.022f, 0.08f);
                 Velocity *= 0.35f;
             }
         }

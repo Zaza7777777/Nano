@@ -11,6 +11,7 @@ namespace CyberDefense.Simulation
         [Header("World")]
         [SerializeField] private Vector2 worldSize = new Vector2(36f, 22f);
         [SerializeField] private bool spawnOnStart = true;
+        [SerializeField] private bool showStartScreen = true;
         [SerializeField] private bool drawQuadTree = true;
         [SerializeField] private Color quadTreeColor = new Color(0.1f, 0.85f, 1f, 0.75f);
 
@@ -41,6 +42,7 @@ namespace CyberDefense.Simulation
         private float quadTreeTargetAlpha = 1f;
         private Rect activeQueryArea;
         private float activeQueryTimer;
+        private bool hasPopulated;
 
         public CentralHub Hub { get; private set; }
         public bool SystemOverload { get; private set; }
@@ -54,13 +56,15 @@ namespace CyberDefense.Simulation
             BuildRuntimeConfigs();
             EnsureBackground();
             EnsureQuadTreeRenderer();
+            EnsurePresentationLabelToggle();
+            EnsureStartScreen();
         }
 
         private void Start()
         {
-            if (spawnOnStart)
+            if (spawnOnStart && !showStartScreen)
             {
-                PopulateWorld();
+                BeginSimulation();
             }
         }
 
@@ -75,6 +79,17 @@ namespace CyberDefense.Simulation
         {
             drawQuadTree = !drawQuadTree;
             quadTreeTargetAlpha = drawQuadTree ? 1f : 0f;
+        }
+
+        public void BeginSimulation()
+        {
+            if (hasPopulated)
+            {
+                return;
+            }
+
+            hasPopulated = true;
+            PopulateWorld();
         }
 
         public void Register(NetworkEntity entity)
@@ -392,6 +407,22 @@ namespace CyberDefense.Simulation
             if (GetComponent<QuadTreeRenderer>() == null)
             {
                 gameObject.AddComponent<QuadTreeRenderer>();
+            }
+        }
+
+        private void EnsurePresentationLabelToggle()
+        {
+            if (GetComponent<PresentationLabelToggle>() == null)
+            {
+                gameObject.AddComponent<PresentationLabelToggle>();
+            }
+        }
+
+        private void EnsureStartScreen()
+        {
+            if (showStartScreen && GetComponent<CyberDefenseStartScreen>() == null)
+            {
+                gameObject.AddComponent<CyberDefenseStartScreen>();
             }
         }
     }

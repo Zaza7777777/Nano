@@ -49,11 +49,11 @@ namespace CyberDefense.Entities
             }
         }
 
-        public void ShowInteractionBeam(NetworkEntity target, Color color)
+        public void ShowInteractionBeam(NetworkEntity target, Color color, float width = 0.055f, float duration = 0.16f)
         {
             if (target != null)
             {
-                EnergyBeamEffect.Spawn(transform.position, target.transform.position, color);
+                EnergyBeamEffect.Spawn(transform.position, target.transform.position, color, width, duration);
             }
         }
 
